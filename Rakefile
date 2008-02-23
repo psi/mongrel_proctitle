@@ -1,0 +1,45 @@
+require 'rake'
+require 'rake/testtask'
+require 'rake/clean'
+require 'rake/gempackagetask'
+require 'rake/rdoctask'
+require 'fileutils'
+include FileUtils
+
+CLEAN.include [ "pkg", "lib/*.bundle", "*.gem", ".config", "**/*.log" ]
+
+desc "Build package"
+task :default => [:package]
+
+version = "0.1"
+name = "mongrel_proctitle"
+
+spec =
+  Gem::Specification.new do |s|
+    s.name = name
+    s.version = version
+    s.platform = Gem::Platform::RUBY
+    s.summary = "The mongrel_proctitle GemPlugin"
+    s.description = s.summary
+    s.author = "Ryan Tomayko <rtomayko@gmail.com>"
+    s.add_dependency('mongrel', '>= 1.1')
+    s.add_dependency('gem_plugin', '>= 0.2.3')
+    s.has_rdoc = true
+    s.extra_rdoc_files = [ "README" ]
+    s.files = %w(LICENSE README Rakefile) +
+      Dir.glob("{bin,doc/rdoc,test,lib}/**/*")
+    s.require_path = "lib"
+  end
+
+Rake::GemPackageTask.new(spec) do |p|
+  p.gem_spec = spec
+  p.need_tar = true
+end
+
+task :install => [:package] do
+  sh %{gem install pkg/#{name}-#{version}.gem}
+end
+
+task :uninstall => [:clean] do
+  sh %{gem uninstall #{name}}
+end
