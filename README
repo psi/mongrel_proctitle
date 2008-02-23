@@ -1,32 +1,53 @@
-Mongrel process title plugin
-============================
+= Mongrel process title GemPlugin
 
-This is a simple plugin for Rails which changes Mongrel's process title to reflect what it's currently doing. You can then determine a given Mongrel server's status using "ps". For example:
+This is a simple plugin for Mongrel which changes the process title to reflect
+what it's currently doing. You can then determine a given Mongrel server's 
+status using "ps". 
 
-  mongrel_rails [10010/2/358]: handling 127.0.0.1: HEAD /feed/calendar/global/91/6de4
+For example:
+
+  mongrel_rails [10010/2/358]: handling 127.0.0.1: HEAD /feed/cal/global/91/6de4
                  |     | |     |        |          |
-                 |     | |     |        |          The current request (method and path)
+                 |     | |     |        |          The current req (method / path)
                  |     | |     |        |
                  |     | |     |        The client IP
                  |     | |     |
                  |     | |     What it's doing
                  |     | |     
-                 |     | The number of requests processed during the server's lifetime
+                 |     | Requests processed during server lifetime
                  |     |
-                 |     The number of requests currently queued/being processed concurrently
+                 |     Requests currently queued/being processed concurrently
                  |
                  The port that Mongrel is serving
 
+This is almost entirely based on Alexander Staubo's Rails plugin with the same 
+name:
 
-Installing into a Rails Mongrel app
------------------------------------
+http://purefiction.net/mongrel_proctitle/
 
-Nothing special. Just drop the plugin in vendor/plugins.
+The main difference is that the GemPlugin will automatically be loaded by all
+mongrels without additional code changes or configuration.
 
+== Installation
 
-Installing into a non-Rails Mongrel app
----------------------------------------
+This version of the plugin is packaged specifically as a Mongrel GemPlugin. Install 
+using:
 
-Just require the module during startup:
+   gem install mongrel_proctitle
 
-  require "mongrel_proctitle"
+Once installed, all new mongrels will automatically load the plugin during startup. If
+you would prefer to control which mongrels load the plugin, do not install this gem.
+Use the directions below instead.
+
+== Installing into a specific Rails app only
+
+See Alexander Staubo's original project:
+
+http://purefiction.net/mongrel_proctitle/
+
+== License
+
+I've included the LICENSE file from the original mongrel_proctitle distribution. It is
+the "New and Simplified BSD License". More information on this license can be found at:
+
+http://www.opensource.org/licenses/bsd-license.php

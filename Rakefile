@@ -11,7 +11,7 @@ CLEAN.include [ "pkg", "lib/*.bundle", "*.gem", ".config", "**/*.log" ]
 desc "Build package"
 task :default => [:package]
 
-version = "0.1"
+version = "1.1.0"
 name = "mongrel_proctitle"
 
 spec =
@@ -21,7 +21,9 @@ spec =
     s.platform = Gem::Platform::RUBY
     s.summary = "The mongrel_proctitle GemPlugin"
     s.description = s.summary
-    s.author = "Ryan Tomayko <rtomayko@gmail.com>"
+    s.author = "Ryan Tomayko"
+    s.email = "rtomayko@gmail.com"
+    s.homepage = "http://github.com/rtomayko/mongrel_proctitle"
     s.add_dependency('mongrel', '>= 1.1')
     s.add_dependency('gem_plugin', '>= 0.2.3')
     s.has_rdoc = true
