@@ -1,4 +1,5 @@
-= Mongrel process title GemPlugin
+Mongrel process title GemPlugin
+===============================
 
 This is a simple plugin for Mongrel which changes the process title to reflect
 what it's currently doing. You can then determine a given Mongrel server's 
@@ -28,7 +29,32 @@ http://purefiction.net/mongrel_proctitle/
 The main difference is that the GemPlugin will automatically be loaded by all
 mongrels without additional code changes or configuration.
 
-== Installation
+Monitoring Mongrels
+-------------------
+
+Once the program is installed, you should be able to see the formatted process
+title by running:
+
+    $ ps -axwwo pid,command | grep mongrel_rails
+
+See ps(1) for more options. You may want to include %cpu, rsz, %mem, or other
+fields in output.
+
+There's also a `mongrel_top` executable included in the gem that works like
+top(1) but displays only mongrel processes:
+
+    $ mongrel_top
+
+By default, `mongrel_top` updates the display every 0.25 seconds and shows the
+pid and process title. You can select a different interval and fields with the
+-s and -o arguments, respectively: 
+
+    $ mongrel_top -s 0.1 -o pid,%cpu,rsz,command
+
+The "command" field must be included.
+
+Installation
+------------
 
 This version of the plugin is packaged specifically as a Mongrel GemPlugin. Install 
 using:
@@ -39,13 +65,15 @@ Once installed, all new mongrels will automatically load the plugin during start
 you would prefer to control which mongrels load the plugin, do not install this gem.
 Use the directions below instead.
 
-== Installing into a specific Rails app only
+Installing into a specific Rails app only
+-----------------------------------------
 
 See Alexander Staubo's original project:
 
 http://purefiction.net/mongrel_proctitle/
 
-== License
+License
+-------
 
 I've included the LICENSE file from the original mongrel_proctitle distribution. It is
 the "New and Simplified BSD License". More information on this license can be found at:
