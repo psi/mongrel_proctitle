@@ -1,0 +1,83 @@
+#!/usr/bin/env ruby
+
+def usage
+  puts "usage: #{File.basename($0)} [-s delay] [-o fields]"
+end
+
+def die(*message)
+  STDERR.puts "fatal: #{format(*message)}" if message.any?
+  exit 1
+end
+
+# clear the terminal
+def clear_screen
+  system 'tput', 'clear'
+end
+
+# clear the terminal and then write output.
+def update_screen(output)
+  clear_screen
+  puts(output)
+end
+
+def terminal_columns
+  @terminal_columns ||=
+    if (cols = `tput cols`) == ""
+      80
+    else
+      cols.to_i
+    end
+end
+
+trap("INT") {
+  STDERR.puts "\nbailing ..."
+  exit 0
+}
+
+# time to wait between updates
+interval = 0.25
+
+# the fields to show in our display (see ps -o)
+fields = "pid,command"
+
+# parse arguments
+argv = ARGV.map { |a| a.split('=', 2) }.flatten
+while argv.any?
+  arg = argv.shift
+  case arg
+  when /^-(s|-delay)$/
+    interval = argv.shift.to_f
+  when /^-(o|-fields)$/
+    fields = argv.shift
+  when /^-(h|-help)$/
+    usage and exit(0)
+  else
+    usage and die
+  end
+end
+
+# Builds the process output display.
+def process_display(fields, interval)
+  now = Time.now.strftime('%a %b %d %H:%M:%S %Y')
+  cols = terminal_columns
+  processes =
+    `ps -axwwo #{fields}`.grep(/mongrel_rails/).map do |line|
+      line.sub! /\s+SHELL=.*$/, ''   # weird MacOS X issue
+      line[0,cols].chomp
+    end
+  output = [
+    (' ' * (cols - now.length)) + now + "\r" +
+    "Mongrel Monitor (delay: #{interval})",
+    "",
+    processes,
+    "",
+    "#{processes.length} process(es)"
+  ]
+  output.flatten.join("\n")
+end
+
+while true
+  output = process_display(fields, interval)
+  update_screen(output)
+  sleep(interval)
+end

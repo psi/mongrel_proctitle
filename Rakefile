@@ -12,7 +12,7 @@ CLEAN.include [ "pkg", "lib/*.bundle", "*.gem", ".config", "**/*.log" ]
 desc "Build package"
 task :default => [:package]
 
-version = "1.1.1"
+version = "1.2.0"
 name = "mongrel_proctitle"
 
 spec =
@@ -29,6 +29,8 @@ spec =
     s.add_dependency('gem_plugin', '>= 0.2.3')
     s.has_rdoc = true
     s.extra_rdoc_files = [ "README" ]
+    s.bindir = "bin"
+    s.executables = [ "mongrel_top" ]
     s.files = %w(LICENSE README Rakefile) +
       Dir.glob("{bin,doc/rdoc,test,lib}/**/*")
     s.require_path = "lib"
