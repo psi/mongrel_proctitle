@@ -61,7 +61,7 @@ def process_display(fields, interval)
   now = Time.now.strftime('%a %b %d %H:%M:%S %Y')
   cols = terminal_columns
   processes =
-    `ps -axwwo #{fields}`.grep(/mongrel_rails/).map do |line|
+    `ps axww -o #{fields}`.grep(/mongrel_rails/).map do |line|
       line.sub! /\s+SHELL=.*$/, ''   # weird MacOS X issue
       line[0,cols].chomp
     end
