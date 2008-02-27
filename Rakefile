@@ -51,6 +51,7 @@ task :uninstall => [:clean] do
   sh %{gem uninstall #{name}}
 end
 
+desc 'Publish gems and other distributables to tomayko.com'
 task :release => [:package] do
   sh <<-end
     ssh tomayko.com 'mkdir -p /dist/#{name}' && \
