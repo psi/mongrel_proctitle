@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+$last_update = nil
+$clear_char = `tput clear`
+
 def usage
   puts "usage: #{File.basename($0)} [-s delay] [-o fields]"
 end
@@ -11,13 +14,15 @@ end
 
 # clear the terminal
 def clear_screen
-  system 'tput', 'clear'
+  STDOUT.write($clear_char)
 end
 
 # clear the terminal and then write output.
 def update_screen(output)
-  clear_screen
-  puts(output)
+  if output != $last_update
+    clear_screen
+    puts(output)
+  end
 end
 
 def terminal_columns
