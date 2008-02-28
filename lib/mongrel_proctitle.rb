@@ -23,6 +23,11 @@ module Mongrel
       @port = new_port
     end
     
+    # Returns revision used in title.
+    def revision
+      @revision ||= get_app_revision if self.respond_to?(:get_app_revision)
+    end
+    
     def request(&block)
       titles, mutex = @titles, @mutex
       mutex.synchronize do
@@ -75,6 +80,7 @@ module Mongrel
     def update_process_title
       title = "#{@prefix} ["
       title << (@port ? "#{@port}" : "?")
+      title << (revision ? "/r#{revision}" : "")
       title << "/#{@queue_length}"
       title << "/#{@request_count}"
       title << "]: #{@title}"
