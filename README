@@ -78,7 +78,7 @@ Showing your application-specific revision/release in the title
 In your application's start-up process, re-open Mongrel::Proctitler
 and define a get_app_revision method. In a Rails app, a good place
 to do this is in RAILS_ROOT/config/environments/production.rb. An
-example is get_app_revision method is here:
+example get_app_revision method might look like:
 
   def get_app_revision
     `cat ./REVISION`.chomp
